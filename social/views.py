@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 
@@ -13,7 +13,7 @@ class PostListView(View):
 
 	def get(self, request, *args, **kwargs):
 		'''grab all posts, order from newest to oldest'''
-		
+
 		posts = Post.objects.all().order_by('-created_on')
 		form = PostForm()
 
@@ -56,10 +56,11 @@ class PostDetailView(View):
 	def get(self, request, pk, *args, **kwargs): #use pk to differentiate between different posts
 		'''method to handle get requests.'''
 		post = Post.objects.get(pk=pk)
-
+		# render comment form:
+		form = CommentForm()
 		context = {
-			'post': post
-
+			'post': post,
+			'form': form,
 		}
 
 		return render(request, 'social/post_detail.html', context)
