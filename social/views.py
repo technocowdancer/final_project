@@ -89,4 +89,15 @@ class PostEditView(UpdateView):
 		return reverse_lazy('post-detail', kwargs={'pk': pk})
 
 
+class PostDeleteView(DeleteView):
+	'''Create a view for Deleting Posts.'''
+
+	model = Post
+	template_name = 'social/post_delete.html'
+	# unlike above we do not need a field, bc no form, and also we
+	# do not need a function only a variable to redirect url
+	success_url = reverse_lazy('post-list')
+	
+
+
 
