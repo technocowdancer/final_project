@@ -27,7 +27,7 @@ class CommentForm(forms.ModelForm):
 		# tells user what actual input should be:
 		widget=forms.Textarea(attrs={
 			'rows': '4', #size
-			'placeholder': 'Write A Reply...'
+			'placeholder': 'Post a comment...'
 			}))
 	class Meta:
 		''' put here what you want in the form, should be based on Comment model:'''

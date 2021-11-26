@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
 from .models import Post
 from .forms import PostForm, CommentForm
+from django.views.generic.edit import UpdateView, DeleteView
+
 
 # Create your views here.
 
@@ -67,3 +70,23 @@ class PostDetailView(View):
 
 
 	# need a post method to handle post requests for posting comments
+
+
+class PostEditView(UpdateView):
+	''' Create View for Editing Posts.'''
+
+	model = Post
+	fields = ['body']
+	template_name = 'social/post_edit.html'
+
+	# to tell program where to redirect after you're done:
+	def get_success_url(self):
+		'''redirect url'''
+		# get the pk
+		pk = self.kwargs['pk']
+
+		# redirect url
+		return reverse_lazy('post-detail', kwargs={'pk': pk})
+
+
+
