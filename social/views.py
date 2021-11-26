@@ -46,4 +46,6 @@ class PostListView(View):
 
 		return render(request, 'social/post_list.html', context)
 
-
+pass
+class PostDetailView(View):
+	''''''
