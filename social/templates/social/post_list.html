@@ -27,10 +27,11 @@
 
 	{% for post in post_list %}
 	<div class="row justify-content-center mt-3">
-		<div class="col-md-5 col-sm-12 border-bottom">
+		<div class="col-md-5 col-sm-12 border-bottom position-relative">
 			<!-- use loop to go throw all the posts -->
 			<p><strong>{{ post.author }}</strong> {{ post.created_on }}</p>
 			<p>{{ post.body }}</p>
+			<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
 		</div>
 	</div>
 	{% endfor %}

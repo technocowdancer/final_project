@@ -13,8 +13,10 @@ class PostListView(View):
 
 	def get(self, request, *args, **kwargs):
 		'''grab all posts, order from newest to oldest'''
+		
 		posts = Post.objects.all().order_by('-created_on')
 		form = PostForm()
+
 		context = {
 			'post_list': posts,
 			'form': form,
@@ -46,6 +48,21 @@ class PostListView(View):
 
 		return render(request, 'social/post_list.html', context)
 
-pass
+
 class PostDetailView(View):
-	''''''
+	'''takes you to a page w/ single post with all the comments listed below it'''
+
+	# need get method to handle get requests to display page
+	def get(self, request, pk, *args, **kwargs): #use pk to differentiate between different posts
+		'''method to handle get requests.'''
+		post = Post.objects.get(pk=pk)
+
+		context = {
+			'post': post
+
+		}
+
+		return render(request, 'social/post_detail.html', context)
+
+
+	# need a post method to handle post requests for posting comments
