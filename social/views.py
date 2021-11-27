@@ -190,12 +190,12 @@ class ProfileView(View):
 		profile = UserProfile.objects.get(pk=pk)
 		user = profile.user
 		# to get all the posts for the user:
-		post = Post.objects.filter(author=user).order_by('-created_on')
+		posts = Post.objects.filter(author=user).order_by('-created_on')
 
 		context = {
 			'user': user,
 			'profile': profile,
-			'posts': posts
+			'posts': posts,
 		}
 		return render(request, 'social/profile.html', context)
 
