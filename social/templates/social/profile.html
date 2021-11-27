@@ -1,0 +1,54 @@
+{% extends 'landing/base.html' %}
+
+
+{% block content %}
+<div class="container">
+	<div class="row mt-5">
+		<div class="col-md-3 col-sm-6">
+			<a href="{% url 'post-list' %}" class="btn btn-light">Back to Feed</a>
+		</div>
+	</div>
+
+	<div class="row justify-content-center mt-5">
+		<div class="card shadow-sm col-md-8 col-sm-12 border-bottom px-5 pt-3">
+			<!-- get url of profile picture -->
+			<img src="{{ profile.picture.url }}" class="rounded-circle" width="100" height="100" />
+
+			<!-- name -->
+			{% if profile.name %}
+			<h3 class="py-4">{{ profile.name }}</h3>
+			{% endif %}
+
+			<!-- bio -->
+			{% if profile.bio %}
+			<h3 class="py-4">{{ profile.bio }}</h3>
+			{% endif %}
+
+			<!--  location -->
+			{% if profile.location %}
+			<h3 class="py-4">{{ profile.location }}</h3>
+			{% endif %}
+
+			<!-- birthdate -->
+			{% if profile.birth_date %}
+			<h3 class="py-4">{{ profile.birth_date }}</h3>
+			{% endif %}
+
+
+
+		</div>
+	</div>
+
+
+	{% for post in posts %}
+	<div class="row justify-content-center mt-5">
+		<div class="col-md-8 col-sm-12 border-bottom position-relative">
+			<!-- use loop to go throw all the posts -->
+			<p><strong>{{ post.author }}</strong> {{ post.created_on }}</p>
+			<p>{{ post.body }}</p>
+			<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock content %}

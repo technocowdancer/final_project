@@ -134,6 +134,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+## SET UP MEDIA:
+
+# Go to base directory of profile, find folder called media and access this
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

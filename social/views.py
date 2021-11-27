@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 ## UserPassesTestMixin, if user passes boolean expression, will allow them to view page and if not, throws 403 error. :) 
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import View
-from .models import Post, Comment
+from .models import Post, Comment, UserProfile
 from .forms import PostForm, CommentForm
 from django.views.generic.edit import UpdateView, DeleteView
 
@@ -177,3 +177,27 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 		post = self.get_object()
 		# if user in request matches author, returns true and allows access to this view
 		return self.request.user == post.author 
+
+# CREATE VIEW FOR USER MODEL:
+
+class ProfileView(View):
+	''' a way to view profiles '''
+
+	def get(self, request, pk, *args, **kwargs):
+		''' to handle get requests to view profiles '''
+		# we need to show all post and profile information:
+		# go into list of userprofiles and get the correct profile then save as profile:
+		profile = UserProfile.objects.get(pk=pk)
+		user = profile.user
+		# to get all the posts for the user:
+		post = Post.objects.filter(author=user).order_by('-created_on')
+
+		context = {
+			'user': user,
+			'profile': profile,
+			'posts': posts
+		}
+		return render(request, 'social/profile.html', context)
+
+
+
