@@ -26,3 +26,22 @@ class Comment(models.Model):
 	# if the post is deleted, the comments are also all deleted
 	post = models.ForeignKey('Post', on_delete=models.CASCADE)
 
+
+class UserProfile(models.Model):
+	''' a class for user profiles '''
+	# give user field to link to users w/ foreign key 
+	# one profile per user (one to one)
+	# can access using 'profile'
+	# way to delete user profile
+	user = models.OneToOneField(User, primary_key=True, verbose_name='user', related_name='profile', on_delete=models.CASCADE)
+	### attributes of user:
+	### allowed to be empty so no errors
+	name = models.CharField(max_length=30, blank=True, null=True)
+	bio = models.TextField(max_length=1000, blank=True, null=True)
+	birth_date = models.DateField(null=True, blank=True)
+	location = models.CharField(max_length=100, blank=True, null=True)
+	# default image of bull-dog
+	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/terrier1.png', blank=True)
+
+
+
