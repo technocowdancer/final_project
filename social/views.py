@@ -158,6 +158,8 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 # create view to delete comments:
 
+###### BUGS FIXED ! :) 
+
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	''' a way to delete comments '''
 	model = Comment
@@ -166,7 +168,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	def get_success_url(self):
 		''' to redirect page to post after you delete comment '''
 
-		pk = self.kwargs['pk']
+		pk = self.kwargs['post_pk']
 		return reverse_lazy('post-detail', kwargs={'pk': pk})
 
 	def test_func(self):
