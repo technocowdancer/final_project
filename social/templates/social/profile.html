@@ -16,22 +16,37 @@
 
 			<!-- name -->
 			{% if profile.name %}
-			<h3 class="py-4">{{ profile.name }}</h3>
-			{% endif %}
+			<h3 class="py-4">{{ profile.name }}
+				<span>
+					{% if request.user == user %}
+						<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
+					{% endif %}
+				</span>
+				{% else %}
+				<h3 class="py-4">{{ user.username }}
+					<span>
+						{% if request.user == user %}
+							<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
+						{% endif %}
+					</span>
+				</h3>
+				{% endif %}
+			</h3>
+		
 
 			<!-- bio -->
 			{% if profile.bio %}
-			<h3 class="py-4">{{ profile.bio }}</h3>
+			<p>{{ profile.bio }}</p>
 			{% endif %}
 
 			<!--  location -->
 			{% if profile.location %}
-			<h3 class="py-4">{{ profile.location }}</h3>
+			<p>{{ profile.location }}</p>
 			{% endif %}
 
 			<!-- birthdate -->
 			{% if profile.birth_date %}
-			<h3 class="py-4">{{ profile.birth_date }}</h3>
+			<p>{{ profile.birth_date }}</p>
 			{% endif %}
 
 

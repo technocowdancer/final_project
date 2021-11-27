@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User 
+from django.db.models.signals import post_save # will run everytime a user is saved in database
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -44,4 +46,19 @@ class UserProfile(models.Model):
 	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/terrier1.png', blank=True)
 
 
+## user sender/receiver to make new profiles when a person registers"
+
+
+# both need receiver decorator:
+@receiver(post_save, sender=User) # once user saved in database, then we want to run:
+def create_user_profile(sender, instance, created, **kwargs):
+	''' creates user profile '''
+	if created:
+		UserProfile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+	''' saves profile '''
+	instance.profile.save()
 
