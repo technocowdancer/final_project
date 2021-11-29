@@ -45,6 +45,10 @@ class UserProfile(models.Model):
 	# default image of bull-dog
 	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/terrier1.png', blank=True)
 
+	# add area to store followers and add to field
+	followers = models.ManyToManyField(User, blank=True, related_name='followers')
+
+
 
 ## user sender/receiver to make new profiles when a person registers"
 

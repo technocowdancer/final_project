@@ -73,6 +73,7 @@ TEMPLATES = [
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
+              'string_if_invalid': 'NameError: template variable [%s] is not defined in this context.', ### ADD THIS LINE
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
