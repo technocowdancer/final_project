@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User 
 from django.db.models.signals import post_save # will run everytime a user is saved in database
 from django.dispatch import receiver
+import os, random, pdb
 
 # Create your models here.
 
@@ -29,6 +30,16 @@ class Comment(models.Model):
 	post = models.ForeignKey('Post', on_delete=models.CASCADE)
 
 
+
+def random_image():
+	'''to get random image for default profile'''
+
+	default_img = random.choice(os.listdir("media/uploads/profile_pictures"))
+	image_path = 'uploads/profile_pictures/' + default_img
+
+	return image_path
+
+
 class UserProfile(models.Model):
 	''' a class for user profiles '''
 	# give user field to link to users w/ foreign key 
@@ -43,14 +54,13 @@ class UserProfile(models.Model):
 	birth_date = models.DateField(null=True, blank=True)
 	location = models.CharField(max_length=100, blank=True, null=True)
 	# default image of bull-dog
-	picture = models.ImageField(upload_to='uploads/profile_pictures', default='uploads/profile_pictures/terrier1.png', blank=True)
-
+	picture = models.ImageField(upload_to='uploads/profile_pictures', default=random_image, blank=True)
 	# add area to store followers and add to field
 	followers = models.ManyToManyField(User, blank=True, related_name='followers')
 
 
-
 ## user sender/receiver to make new profiles when a person registers"
+
 
 
 # both need receiver decorator:

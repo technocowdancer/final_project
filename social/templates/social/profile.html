@@ -16,22 +16,23 @@
 
 			<!-- name -->
 			{% if profile.name %}
-			<h3 class="py-4">{{ profile.name }}
-				<span>
-					{% if request.user == user %}
-						<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
-					{% endif %}
-				</span>
-				{% else %}
-				<h3 class="py-4">{{ user.username }}
-					<span>
-						{% if request.user == user %}
-							<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
-						{% endif %}
-					</span>
-				</h3>
-				{% endif %}
+				
+				<h3 class="py-4">{{ profile.name }} 
+			{% else %}
+				<h3 class="py-4">{{ user.username }} 
+
+			{% endif %}
+			<span>
+			{% if request.user == user %}
+				
+				<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
+				<a href="{% url 'profile-delete' profile.pk %}" style="color: #333;"><i class="far fa-trash"></i></a>
+				
+			{% endif %}
+			</span>
 			</h3>
+
+			
 		
 
 			<!-- bio -->
@@ -61,12 +62,18 @@
 			<!-- use loop to go throw all the posts -->
 			<p>
 
-				<a style="text-decoration: none" class="text-primary" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }} </a> {{ post.created_on }}</p> 
-			
+				<a style="text-decoration: none" class="text-primary" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }} </a> {{ post.created_on }}
+
+				 {% if request.user == post.author %}
+					<a href="{% url 'post-edit' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>
+					<a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="far fa-trash"></i></a>
+				{% endif %}
+				</p>
 
 			<div class="position-relative">
 				<p>{{ post.body }}</p>
 				<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
+
 			</div>
 		</div>
 	</div>

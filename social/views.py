@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, re_path
 ## LoginRequiredMxixin, if you add it to any view, page will redirect user to log in page if they aren't logged in 
 ## UserPassesTestMixin, if user passes boolean expression, will allow them to view page and if not, throws 403 error. :) 
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -213,4 +213,37 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 	def test_func(self):
 		profile = self.get_object()
+		return self.request.user == profile.user
+
+
+class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	''' a way to delete profiles '''
+	model = UserProfile
+	template_name = 'social/profile_delete.html'
+
+	def get(self, request, pk, *args, **kwargs):
+		''' to handle get requests to view profiles '''
+		# we need to show all post and profile information:
+		# go into list of userprofiles and get the correct profile then save as profile:
+		profile = UserProfile.objects.get(pk=pk)
+		user = profile.user
+		# to get all the posts for the user:
+		
+
+		context = {
+			'user': user,
+			'profile': profile,
+			
+		}
+		return render(request, 'landing/index.html', context)
+
+	def get_success_url(self):
+		pk = self.kwargs['pk']
+		return reverse_lazy('profile', kwargs={'pk': pk})
+
+	def test_func(self):
+		''' function for the UserPassesTestMixin, boolean expression '''
+
+		profile = self.get_object()
+		# if user in request matches author, returns true and allows access to this view
 		return self.request.user == profile.user
