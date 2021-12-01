@@ -235,7 +235,7 @@ class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 			'profile': profile,
 			
 		}
-		return render(request, 'landing/index.html', context)
+		return render(request, 'landing_pages/index.html', context)
 
 	def get_success_url(self):
 		pk = self.kwargs['pk']
