@@ -16,6 +16,8 @@ class Post(models.Model):
 	created_on = models.DateTimeField(default=timezone.now)
 	# Finds user that is loged in and substitutes that into field
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
+	# to hold likes:
+	likes = models.ManyToManyField(User, blank=True, related_name='likes')
 
 class Comment(models.Model):
 	'''Make a comment model so that users can comment on posts!'''

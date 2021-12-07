@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, re_path
+from django.http import HttpResponseRedirect
 ## LoginRequiredMxixin, if you add it to any view, page will redirect user to log in page if they aren't logged in 
 ## UserPassesTestMixin, if user passes boolean expression, will allow them to view page and if not, throws 403 error. :) 
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -256,3 +257,23 @@ class RemoveFollower(LoginRequiredMixin, View):
 		profile.followers.remove(request.user)
 		return redirect('profile', pk=profile.pk)
 
+class AddLike(LoginRequiredMixin, View):
+	def post(self, request, pk, *args, **kwargs):
+		post = Post.objects.get(pk=pk)
+		#if not in field, add to many to many field, use loop
+
+		# return list from like field
+		is_like = False
+
+		for like in post.likes.all():
+			if like == request.user:
+				is_like = True
+				break
+		if not is_like:
+			post.likes.add(request.user)
+			# to undo like:
+		if is_like:
+			post.likes.remove(request.user)
+
+		next = request.POST.get('next', '/')
+		return HttpResponseRedirect(next)
