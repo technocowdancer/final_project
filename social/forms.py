@@ -12,10 +12,13 @@ class PostForm(forms.ModelForm):
 			'rows': '4', #size
 			'placeholder': 'Say Something...'
 			}))
+	# to add images to form
+	image = forms.ImageField(required=False)
+
 	class Meta:
 		''' put here what you want in the form, should be based on Post model:'''
 		model = Post 
-		fields = ['body']
+		fields = ['body', 'image']
 
 class CommentForm(forms.ModelForm):
 	'''create a form for users to create comments on posts.'''

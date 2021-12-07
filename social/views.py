@@ -41,7 +41,7 @@ class PostListView(LoginRequiredMixin, View):
 	def post(self, request, *args, **kwargs):
 		'''to handle post requests for when user hits submit button'''
 		posts = Post.objects.all().order_by('-created_on')
-		form = PostForm(request.POST)
+		form = PostForm(request.POST, request.FILES)
 
 		#Check if form is valid:
 

@@ -86,6 +86,9 @@
 				</p>
 
 			<div class="position-relative">
+				{% if post.image %}
+					<img src="{{ post.image.url }}" class="post-image" max-width = "300px" height = "300px" border="10px" />
+				{% endif %}
 				<p>{{ post.body }}</p>
 				<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
 			</div>

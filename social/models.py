@@ -12,6 +12,8 @@ class Post(models.Model):
 	will need 3 fields here, body (text), created on date, and user that created post.
 	'''
 	body = models.TextField()
+	# to upload images
+	image = models.ImageField(upload_to='uploads/post_photos', blank=True, null=True)
 	# Always defaults current time, user cannot change time
 	created_on = models.DateTimeField(default=timezone.now)
 	# Finds user that is loged in and substitutes that into field

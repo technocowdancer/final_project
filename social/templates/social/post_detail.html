@@ -20,7 +20,12 @@
 					<a href="{% url 'post-delete' post.pk %}" style="color: #333;"><i class="far fa-trash"></i></a>
 				{% endif %}
 			</p>
+			
+			{% if post.image %}
+					<img src="{{ post.image.url }}" class="post-image" max-width = "300px" height = "300px" border="10px" />
+			{% endif %}
 			<p>{{ post.body }}</p>
+
 			<div class="d-flex flex-row">
 				<form method="POST" action="{% url 'like' post.pk %}">
 					{% csrf_token %}
