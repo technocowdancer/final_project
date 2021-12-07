@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, re_path
 ## LoginRequiredMxixin, if you add it to any view, page will redirect user to log in page if they aren't logged in 
 ## UserPassesTestMixin, if user passes boolean expression, will allow them to view page and if not, throws 403 error. :) 
@@ -7,6 +7,7 @@ from django.views import View
 from .models import Post, Comment, UserProfile
 from .forms import PostForm, CommentForm
 from django.views.generic.edit import UpdateView, DeleteView
+
 
 
 # Create your views here.
@@ -191,12 +192,34 @@ class ProfileView(View):
 		user = profile.user
 		# to get all the posts for the user:
 		posts = Post.objects.filter(author=user).order_by('-created_on')
+		# get all objects in many to many field
+		followers = profile.followers.all()
+
+		## use booleen logic to see if user is following someone to determine if 'follow' button should display
+
+		####if no followers
+
+		if len(followers) == 0:
+			is_following = False
+
+		for follower in followers:
+			if follower == request.user:
+				is_following = True
+				break
+			else:
+				is_following = False
+		# get length of list
+		number_of_followers = len(followers)
 
 		context = {
 			'user': user,
 			'profile': profile,
 			'posts': posts,
+			'number_of_followers': number_of_followers,
+			#add is following to context dictionary 
+			'is_following': is_following,
 		}
+
 		return render(request, 'social/profile.html', context)
 
 
@@ -215,35 +238,21 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		profile = self.get_object()
 		return self.request.user == profile.user
 
-
-class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-	''' a way to delete profiles '''
-	model = UserProfile
-	template_name = 'social/profile_delete.html'
-
-	def get(self, request, pk, *args, **kwargs):
-		''' to handle get requests to view profiles '''
-		# we need to show all post and profile information:
-		# go into list of userprofiles and get the correct profile then save as profile:
+class AddFollower(LoginRequiredMixin, View):
+	''' To handle post requests to add followers '''
+	def post(self, request, pk, *args, **kwargs):
+		#get profile you are on
 		profile = UserProfile.objects.get(pk=pk)
-		user = profile.user
-		# to get all the posts for the user:
-		
+		# add to followers field
+		profile.followers.add(request.user)
+		# return profile view to redirect
+		return redirect('profile', pk=profile.pk)
 
-		context = {
-			'user': user,
-			'profile': profile,
-			
-		}
-		return render(request, 'landing_pages/index.html', context)
+class RemoveFollower(LoginRequiredMixin, View):
+	''' to handle post requests to remove followers '''
+	def post(self, request, pk, *args, **kwargs):
+		profile = UserProfile.objects.get(pk=pk)
+		# use remove to remove from follower many to many field
+		profile.followers.remove(request.user)
+		return redirect('profile', pk=profile.pk)
 
-	def get_success_url(self):
-		pk = self.kwargs['pk']
-		return reverse_lazy('profile', kwargs={'pk': pk})
-
-	def test_func(self):
-		''' function for the UserPassesTestMixin, boolean expression '''
-
-		profile = self.get_object()
-		# if user in request matches author, returns true and allows access to this view
-		return self.request.user == profile.user

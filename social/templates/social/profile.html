@@ -26,7 +26,6 @@
 			{% if request.user == user %}
 				
 				<a href="{% url 'profile-edit' profile.pk %}" style="color: #333"><i class="far fa-edit"></i></a>
-				<a href="{% url 'profile-delete' profile.pk %}" style="color: #333;"><i class="far fa-trash"></i></a>
 				
 			{% endif %}
 			</span>
@@ -50,10 +49,26 @@
 			<p>{{ profile.birth_date }}</p>
 			{% endif %}
 
+			<div class="mb-3">
+				<p>Followers: {{ number_of_followers }} </p>
+				{% if user == request.user %}
+				{% else %}
+				{% if is_following %}
+				<form method="POST" action="{% url 'remove-follower' profile.pk%}">
+					{% csrf_token %}
+					<button class="btn btn-outline-danger" type="submit">Unfollow</button>
+				</form>
+				{% else %}
+				<form method="POST" action="{% url 'add-follower' profile.pk %}">
+					{% csrf_token %}
+					<button class="btn btn-outline-success" type="submit">Follow</button>
+				</form>
+				{% endif %}
+				{% endif %}
 
+			</div>
 
 		</div>
-	</div>
 
 
 	{% for post in posts %}
@@ -73,7 +88,6 @@
 			<div class="position-relative">
 				<p>{{ post.body }}</p>
 				<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
-
 			</div>
 		</div>
 	</div>
