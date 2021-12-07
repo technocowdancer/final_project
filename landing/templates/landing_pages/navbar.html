@@ -7,6 +7,7 @@
     {% else %}
     href="{% url 'index' %}"
     {% endif %}
+    
     ><i class="fal fa-torii-gate"> InterFaith Hub</i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler -icon"></span>
@@ -31,7 +32,7 @@
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fas fa-user"></i></a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'profile' user.profile.pk %}">View Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' request.user.profile.pk %}">View Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Log Out</a></li>
               </ul>
             </div>
