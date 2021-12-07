@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from django.urls import reverse_lazy, re_path
 from django.http import HttpResponseRedirect
 ## LoginRequiredMxixin, if you add it to any view, page will redirect user to log in page if they aren't logged in 
@@ -277,3 +278,18 @@ class AddLike(LoginRequiredMixin, View):
 
 		next = request.POST.get('next', '/')
 		return HttpResponseRedirect(next)
+
+class UserSearch(View):
+	'''a view to search with navbar'''
+	def get(self, request, *args, **kwargs):
+		'''to put parameter of search in url'''
+		query = self.request.GET.get('query')
+		profile_list = UserProfile.objects.filter(
+			Q(user__username__icontains=query)
+
+		)
+
+		context = {
+			'profile_list': profile_list,
+		}
+		return render(request, 'social/search.html', context)
