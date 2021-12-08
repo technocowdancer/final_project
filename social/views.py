@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 ## UserPassesTestMixin, if user passes boolean expression, will allow them to view page and if not, throws 403 error. :) 
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import View
-from .models import Post, Comment, UserProfile
+from .models import Post, Comment, UserProfile, Reply
 from .forms import PostForm, CommentForm, ReplyForm
 from django.views.generic.edit import UpdateView, DeleteView
 from django.db.models import Count
@@ -98,9 +98,12 @@ class PostDetailView(LoginRequiredMixin, View):
         form = CommentForm()
         reply_form = ReplyForm()
 
+
         # copied from line 90
 
         comments = Comment.objects.filter(post=post).order_by('-created_on')
+        #pull reply data
+        replies = Reply.objects.filter(comment__in=comments)
         common_tags = Post.tags.most_common()[:4]
         # add line 67 to get request:
         context = {
@@ -110,6 +113,7 @@ class PostDetailView(LoginRequiredMixin, View):
             'comments': comments,
             "comments_count": len(comments),
             "common_tags": common_tags,
+            "replies": replies,
         }
 
         return render(request, 'social/post_detail.html', context)
@@ -351,6 +355,6 @@ class AddReply(LoginRequiredMixin, View):
             reply.author = request.user
             reply.comment = comment
             reply.save()
-        next = request.POST.get('next', "/social/") #need this to be post-detail (refreshes page)
-        return HttpResponseRedirect(next)
+    
+        return redirect(f"/social/post/{comment.post.id}")
 

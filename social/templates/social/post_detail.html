@@ -68,11 +68,27 @@
                         {% endif %}
                     </p>
                     <p>{{ comment.comment }}</p>
+                    {% if replies %}
+	                    <div style="padding-left: 50px;">
+
+	                   		{% for reply in replies %}
+	                   			{% if reply.comment == comment %}
+		                   			<strong class="text-red">@{{ reply.author }} </strong> {{ reply.created_on }}
+		                   			<p>{{ reply.reply }}</p>
+	                   			{% endif %}
+			             
+	                   		{% endfor %}
+	                   			
+
+	                   	</div>
+                   	{% endif %}
+
                     <form method="POST" action="{% url 'comment-reply' comment.id %}">
                         {% csrf_token %}
                         {{ reply_form | crispy }}
                         <button class="btn btn-secondary mt-3">Comment</button>
                     </form>
+
                 </div>
         </div>
         {% endfor %}
