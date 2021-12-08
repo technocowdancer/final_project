@@ -148,11 +148,12 @@ class PostDetailView(LoginRequiredMixin, View):
         return render(request, 'social/post_detail.html', context)
 
 
+
 class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     ''' Create View for Editing Posts.'''
 
     model = Post
-    fields = ['image']
+    fields = ['image', 'body']
     template_name = 'social/post_edit.html'
 
     # to tell program where to redirect after you're done:
