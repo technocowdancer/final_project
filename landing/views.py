@@ -5,4 +5,4 @@ class Index(View):
 	def get(self, request, *args, **kwargs):
 		return render(request, 'landing_pages/index.html')
 
-#Done!
+#Done!!
