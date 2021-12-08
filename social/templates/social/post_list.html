@@ -3,53 +3,82 @@
 
 {% block content %}
 <div class="container">
-	<div class="row justify-content-center mt-3">
-		<div class="col-md-5 col-sm-12 border-bottom">
+	<div class="row">
+        <div class="col-lg-2 mt-5" style="margin-left: -20px; height:100px;">
+            {% for user in users %}
+                <div class="mt-1"><a href="" class="text-red mb-2 underline">@{{ user.username }}</a></div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-8">
+            <div class="row justify-content-center mt-3">
+		<div class="col-md-10 col-sm-12 border-bottom">
 			<h5>Add a Post!</h5>
 		</div>
 	</div>
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-10 col-sm-12">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="d-grid gap-2">
+                        <!--will span the width -->
+                        <button class="btn btn-secondary mt-3">Submit!</button>
+                    </div>
+                </form>
+            </div>
 
-	<div class="row justify-content-center mt-3 mb-5">
-		<div class="col-md-5 col-sm-12 border-bottom">
-			<form method="POST" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ form | crispy }}
-				<div class="d-grid gap-2">
-
-					<!--will span the width -->
-					<button class="btn btn-success mt-3">Submit!</button>
-
-				</div>
-			</form>
-		</div>
-	</div>
+            <div class="col-md-10 col-sm-12 mt-3">
+            Common tags  :
+                {% for mt in common_tags %}
+                    <a href="#" class="badge bg-success">{{ mt }}</a>
+                {% endfor %}
+            </div>
+        </div>
 
 
-	{% for post in post_list %}
-	<div class="row justify-content-center mt-3">
-		<div class="col-md-5 col-sm-12 border-bottom position-relative">
-			<p>
+        {% for post in post_list %}
+            <div class="row justify-content-center mt-3">
+            <div class="col-md-10 col-sm-12  position-relative">
+                <p>
+                <div class="position-relative post">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="post-image status_pics mb-4" />
+                    {% endif %}
+                    <p class="post_body">
+                        <a style="text-decoration: none;" class="text-red" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }}</a> {{ post.created_on }}</p>
+                    </p>
+                    <p class="post_body">
+                            {% for tag in post.tags.all %}
+                            <a href="{% url 'tagged' tag.slug %}" class="mr-1 badge bg-info">#{{ tag }}</a>
+                            {% endfor %}
+                    </p>
+                    <p class="post_body" >
+                        {{ post.body }}
+                        <div>
+                            <a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3 mt-2 ml-3 more_info " style="text-decoration: none; margin-left:15px;" >Click to View &nbsp;<i class="fas fa-long-arrow-alt-right"></i></a>
+                        </div>
+                        <div class="d-flex flex-row mb-4" style="margin-left: 20px;">
+                        <form method="POST" action="{% url 'like' post.pk %}" class="">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button style="background-color: transparent; border: none; box-shadow: none;" type="submit"><i class="far fa-thumbs-up pr-1 text-like  ml-3"> <span>{{ post.likes.all.count }}</span></i></button>
+                        </form>
+                         <div>
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <div style="background-color: transparent; border: none; box-shadow: none;" type="submit"><i class="fas fa-comment pr-1 mr-1 text-primary  ml-3">&nbsp;<span>{{ post.comments.count }}</span></i></div>
+                        </div>
+                    </div>
+                    </p>
 
-				<a style="text-decoration: none;" class="text-primary" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }}</a> {{ post.created_on }}</p> 
-			
-			<div class="position-relative">
-				{% if post.image %}
-					<img src="{{ post.image.url }}" class="post-image" max-width = "300px" height = "300px" border="10px" />
-				{% endif %}
-				<p>{{ post.body }}</p>
-				<a href="{% url 'post-detail' post.pk %}" class="stretched-link btn btn-light mb-3" style="text-decoration: none;" >Click to View</a>
-			</div>
+                </div>
 
-			<div class="d-flex flex-row">
-				<form method="POST" action="{% url 'like' post.pk %}">
-					{% csrf_token %}
-					<input type="hidden" name="next" value="{{ request.path }}">
-					<button style="background-color: transparent; border: none; box-shadow: none;" type="submit"><i class="far fa-thumbs-up"><span>{{ post.likes.all.count }}</span></i></button>
-				</form>
-			</div>
-		</div>
 
-	</div>
-	{% endfor %}
+            </div>
+
+        </div>
+        {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock content %}

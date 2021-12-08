@@ -77,7 +77,7 @@
 			<!-- use loop to go throw all the posts -->
 			<p>
 
-				<a style="text-decoration: none" class="text-primary" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }} </a> {{ post.created_on }}
+				<a style="text-decoration: none" class="text-red" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }} </a> {{ post.created_on }}
 
 				 {% if request.user == post.author %}
 					<a href="{% url 'post-edit' post.pk %}" style="color: #333;"><i class="far fa-edit"></i></a>

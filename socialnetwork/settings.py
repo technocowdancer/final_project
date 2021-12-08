@@ -40,6 +40,7 @@ AUTHENTICATION_BACKENDS = [
 INSTALLED_APPS = [
     'social',
     'landing',
+    "taggit",
     'crispy_forms',
     'allauth',
     'allauth.account',
@@ -153,3 +154,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'post-list'
 ACCOUNT_EMAIL_REQUIRED = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+TAGGIT_CASE_INSENSITIVE = True
