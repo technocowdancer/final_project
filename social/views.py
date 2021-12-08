@@ -351,6 +351,6 @@ class AddReply(LoginRequiredMixin, View):
             reply.author = request.user
             reply.comment = comment
             reply.save()
-        next = request.POST.get('next', "/social/")
+        next = request.POST.get('next', "/social/") #need this to be post-detail (refreshes page)
         return HttpResponseRedirect(next)
 
