@@ -13,7 +13,7 @@
 		<div class="col-md-6 col-sm-12 border-bottom post pt-3">
 			<!-- use loop to go throw all the posts -->
 			<p>
-				<strong class="text-red">@{{ post.author }}</strong> {{ post.created_on }}
+				<strong class="text-red"><a style="text-decoration: none;" class="text-primary" href="{% url 'profile' post.author.profile.pk %}">@{{ post.author }}</a></strong> {{ post.created_on }}
 				<!-- add some links to edit and delete post; user only -->
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				{% if request.user == post.author %}
