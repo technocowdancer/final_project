@@ -23,7 +23,7 @@ class Post(models.Model):
     # to hold likes:
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     comments = models.ManyToManyField(User, blank=True, related_name='comments')
-    slug = models.SlugField(unique=True, max_length=100)
+    #slug = models.SlugField(unique=True, max_length=100) # from a tutorial and not necessary for my project
     tags = TaggableManager()
 
 
